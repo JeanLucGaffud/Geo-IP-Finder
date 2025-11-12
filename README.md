@@ -1,4 +1,4 @@
-# JLabs: Basic Assessment Exam
+# Geolocates based on IP
 
 ## Tech Stack
 

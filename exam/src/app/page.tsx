@@ -35,7 +35,6 @@ interface HistoryItem {
 
 export default function Home() {
   const router = useRouter()
-  const { data: session, isPending } = authClient.useSession()
   const [geoData, setGeoData] = useState<GeoLocation | null>(null)
   const [searchIp, setSearchIp] = useState('')
   const [error, setError] = useState('')
@@ -43,16 +42,16 @@ export default function Home() {
   const [history, setHistory] = useState<HistoryItem[]>([])
 
   useEffect(() => {
-    if (!isPending && !session) {
-      router.push('/login')
-      return
-    }
+    // if (!isPending && !session) {
+    //   router.push('/login')
+    //   return
+    // }
 
-    if (session && !geoData) {
+    if (!geoData) {
       fetchGeoLocation()
     }
 
-  }, [session, isPending])
+  }, [/*session, isPending,*/ geoData, router])
 
   useEffect(() => {
     const storedHistory = localStorage.getItem('ipHistory')
@@ -165,17 +164,6 @@ export default function Home() {
     }
   }
 
-  if (isPending) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
-      </div>
-    )
-  }
-
-  if (!session) {
-    return null
-  }
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-8 px-4">
@@ -183,7 +171,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow-md p-6 mb-6 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">IP Geolocation Tracker</h1>
-            <p className="text-gray-600 mt-1">Welcome, {session.user.name || session.user.email}</p>
+            
           </div>
           <button
             onClick={handleLogout}
